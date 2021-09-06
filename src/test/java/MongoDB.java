@@ -1,43 +1,30 @@
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
-import com.mongodb.MongoCredential;
+import crud.create.CreateOperation;
+import crud.read.ReadOperation;
 
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import org.bson.Document;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 public class MongoDB {
 
-    public static void main(String[] args) {
-        // Creating a Mongo client
-        MongoClient mongo = new MongoClient( "localhost" , 27017 );
+    public static void main(String[] args) throws IOException {
 
-        // Creating Credentials
-        MongoCredential credential;
-        credential = MongoCredential.createCredential("sampleUser", "myDb",
-                "password".toCharArray());
-        System.out.println("Connected to the database successfully");
+        Properties properties = null;
+        properties = new Properties();
+        properties.load(new FileInputStream("database.properties"));
 
-        // Accessing the database
-        MongoDatabase database = mongo.getDatabase("myDb");
-        System.out.println("Credentials ::"+ credential);
+        MongoClient mongo=connection.DbConnection.connection(properties);
 
-     /*   database.createCollection("sampleCollection");
-        System.out.println("Collection has been created");*/
+    /*    //Insert Data
+        CreateOperation.insertOperation(mongo,properties);
 
-        // Retrieving a collection
-        MongoCollection<Document> collection = database.getCollection("sampleCollection");
-        System.out.println("Collection sampleCollection selected successfully");
-        Document document = new Document("title", "MongoDB")
-                .append("description", "database")
-                .append("likes", 100)
-                .append("url", "http://www.tutorialspoint.com/mongodb/")
-                .append("by", "tutorials point");
+       //Read Data
+        ReadOperation.readFirstElement(mongo,properties);
+        ReadOperation.printAllElements(mongo,properties);*/
+       ReadOperation.titleSearchIndex(mongo,properties);
 
-        //Inserting document into the collection
-        collection.insertOne(document);
-        System.out.println("Document inserted successfully");
+
 
 
 
